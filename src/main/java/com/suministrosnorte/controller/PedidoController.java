@@ -1,21 +1,14 @@
 package com.suministrosnorte.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.suministrosnorte.model.Pedido;
 import com.suministrosnorte.model.Estado;
+import com.suministrosnorte.model.Pedido;
 import com.suministrosnorte.service.PedidoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -27,59 +20,70 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
+    // POST /pedidos
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Pedido crearPedido(@RequestBody Pedido pedido) {
-        return pedidoService.crearPedido(pedido);
+    public ResponseEntity<Pedido> crear(@RequestBody Pedido pedido) {
+        Pedido creado = pedidoService.crearPedido(pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 
+    // GET /pedidos (extra, útil para ver todos)
     @GetMapping
-    public List<Pedido> obtenerPedidos() {
-        return pedidoService.obtenerPedidos();
+    public ResponseEntity<List<Pedido>> listar() {
+        return ResponseEntity.ok(pedidoService.obtenerPedidos());
     }
 
+    // PUT /pedidos/{id}/confirmar
     @PutMapping("/{id}/confirmar")
-    public Pedido confirmar(@PathVariable Long id) {
-        return pedidoService.confirmar(id);
+    public ResponseEntity<Pedido> confirmar(@PathVariable Long id) {
+        return ResponseEntity.ok(pedidoService.confirmar(id));
     }
 
+    // PUT /pedidos/{id}/cancelar
     @PutMapping("/{id}/cancelar")
-    public Pedido cancelar(@PathVariable Long id) {
-        return pedidoService.cancelar(id);
+    public ResponseEntity<Pedido> cancelar(@PathVariable Long id) {
+        return ResponseEntity.ok(pedidoService.cancelar(id));
     }
 
+    // PUT /pedidos/{id}/despachar
     @PutMapping("/{id}/despachar")
-    public Pedido despachar(@PathVariable Long id) {
-        return pedidoService.despachar(id);
+    public ResponseEntity<Pedido> despachar(@PathVariable Long id) {
+        return ResponseEntity.ok(pedidoService.despachar(id));
     }
 
+    // GET /pedidos/pendientes
     @GetMapping("/pendientes")
-    public List<Pedido> pendientes() {
-        return pedidoService.porEstado(Estado.PENDIENTE);
+    public ResponseEntity<List<Pedido>> pendientes() {
+        return ResponseEntity.ok(pedidoService.porEstado(Estado.PENDIENTE));
     }
 
+    // GET /pedidos/urgentes
     @GetMapping("/urgentes")
-    public List<Pedido> urgentes() {
-        return pedidoService.urgentes();
+    public ResponseEntity<List<Pedido>> urgentes() {
+        return ResponseEntity.ok(pedidoService.urgentes());
     }
 
+    // GET /pedidos/estado?estado=CONFIRMADO
     @GetMapping("/estado")
-    public List<Pedido> porEstado(@RequestParam Estado estado) {
-        return pedidoService.porEstado(estado);
+    public ResponseEntity<List<Pedido>> porEstado(@RequestParam Estado estado) {
+        return ResponseEntity.ok(pedidoService.porEstado(estado));
     }
 
+    // GET /pedidos/resumen
     @GetMapping("/resumen")
-    public java.util.Map<String, Long> resumen() {
-        return pedidoService.resumen();
+    public ResponseEntity<Map<String, Long>> resumen() {
+        return ResponseEntity.ok(pedidoService.resumen());
     }
 
+    // GET /pedidos/siguiente
     @GetMapping("/siguiente")
-    public Pedido siguiente() {
-        return pedidoService.siguiente();
+    public ResponseEntity<Pedido> siguiente() {
+        return ResponseEntity.ok(pedidoService.siguiente());
     }
 
+    // GET /pedidos/en-riesgo
     @GetMapping("/en-riesgo")
-    public List<Pedido> enRiesgo() {
-        return pedidoService.enRiesgo();
+    public ResponseEntity<List<Pedido>> enRiesgo() {
+        return ResponseEntity.ok(pedidoService.enRiesgo());
     }
 }

@@ -35,3 +35,13 @@ build/
 # Logs locales de ejecucion
 spring-boot.log
 spring-boot-error.log
+
+# Angular
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
+
+# Base de datos local
+data/*.db
+data/*.trace.db
+data/*.lock.db

@@ -23,12 +23,12 @@ async function loadProducts() {
             <article class="product-card">
                 <div class="product-art">${brandInitials(product.nombre)}</div>
                 <p class="product-name">${product.nombre}</p>
-                <p class="stock ${product.stock === 0 ? 'out' : ''}">${product.stock === 0 ? 'Agotado' : `${product.stock} unidades disponibles`}</p>
+                <p class="stock ${product.cantidad === 0 ? 'out' : ''}">${product.cantidad === 0 ? 'Agotado' : `${product.cantidad} unidades disponibles`}</p>
             </article>
         `).join('');
         productSelect.innerHTML = '<option value="">Selecciona un modelo</option>' + products
-            .filter(product => product.stock > 0)
-            .map(product => `<option value="${product.id}">${product.nombre} · ${product.stock} disponibles</option>`)
+            .filter(product => product.cantidad > 0)
+            .map(product => `<option value="${product.id}">${product.nombre} · ${product.cantidad} disponibles</option>`)
             .join('');
     } catch (error) {
         productsElement.innerHTML = `<p class="loading">No se pudo cargar el catálogo: ${error.message}</p>`;

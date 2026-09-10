@@ -1,6 +1,6 @@
 # Operacion Ultima Milla
 
-Backend Spring Boot para gestionar pedidos con prioridades, estados e inventario.
+Aplicación full stack Angular + Spring Boot para gestionar productos, inventario y pedidos.
 
 ## Ejecutar
 
@@ -10,11 +10,29 @@ Backend Spring Boot para gestionar pedidos con prioridades, estados e inventario
 
 La API queda disponible en `http://localhost:8080`.
 
+## Frontend Angular
+
+En otra terminal, instala las dependencias y ejecuta el frontend:
+
+```powershell
+cd frontend
+npm install
+npm start
+```
+
+La aplicación queda disponible en `http://localhost:4200`. Spring Boot autoriza únicamente ese origen mediante CORS para el entorno de desarrollo.
+
+La interfaz permite consultar, crear, editar y eliminar productos; crear pedidos; confirmar, cancelar y despachar pedidos según su estado; y consultar el dashboard operativo. Las peticiones se centralizan en `ProductoService` y `PedidoService` de Angular.
+
 ## Endpoints
 
 | Metodo | Ruta | Funcion |
 | --- | --- | --- |
 | GET | `/productos` | Consultar productos y stock disponible |
+| GET | `/productos/{id}` | Consultar un producto |
+| POST | `/productos` | Crear un producto |
+| PUT | `/productos/{id}` | Actualizar un producto |
+| DELETE | `/productos/{id}` | Eliminar un producto |
 | POST | `/pedidos` | Crear un pedido pendiente |
 | GET | `/pedidos` | Listar pedidos |
 | GET | `/pedidos/pendientes` | Listar pendientes |
@@ -46,3 +64,5 @@ Un pedido urgente de 20 unidades para un producto con 12 unidades se conserva co
 ```powershell
 .\mvnw.cmd test
 ```
+
+Para comprobar la integración, con ambas aplicaciones ejecutándose abre las herramientas de desarrollo del navegador en `http://localhost:4200`, pestaña **Network**, y realiza un GET, POST, PUT y DELETE desde la interfaz.

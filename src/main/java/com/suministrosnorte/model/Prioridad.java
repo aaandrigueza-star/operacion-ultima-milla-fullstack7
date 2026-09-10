@@ -1,19 +1,18 @@
 package com.suministrosnorte.model;
 
 public enum Prioridad {
+    BAJA(1),
+    MEDIA(2),
+    ALTA(3),
+    URGENTE(4);
 
-    BAJA,
-    MEDIA,
-    ALTA,
-    URGENTE;
+    private final int peso;
 
-    public int peso() {
-        return switch (this) {
-            case URGENTE -> 1;
-            case ALTA -> 2;
-            case MEDIA -> 3;
-            case BAJA -> 4;
-        };
+    Prioridad(int peso) {
+        this.peso = peso;
     }
 
+    public int getPeso() {
+        return peso;
+    }
 }

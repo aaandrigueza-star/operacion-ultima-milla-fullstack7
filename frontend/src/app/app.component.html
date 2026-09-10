@@ -1,0 +1,70 @@
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">UM</span><span>OPERACION ULTIMA MILLA</span></div>
+  <button class="icon-button" type="button" title="Actualizar datos" aria-label="Actualizar datos" (click)="recargar()">↻</button>
+</header>
+
+<main>
+  <section class="intro">
+    <div><p class="eyebrow">INTEGRACION FULL STACK</p><h1>Inventario y pedidos</h1></div>
+    <p>Gestiona productos, disponibilidad y el ciclo operativo de cada pedido.</p>
+  </section>
+
+  @if (mensaje) {
+    <p class="message" [class.error]="esError" role="status">{{ mensaje }}</p>
+  }
+
+  <section class="metrics" aria-label="Resumen operativo">
+    <article><strong>{{ resumen.productos }}</strong><span>Productos</span></article>
+    <article><strong>{{ resumen.stockBajo }}</strong><span>Stock bajo</span></article>
+    <article><strong>{{ resumen.pedidos }}</strong><span>Pedidos</span></article>
+    <article><strong>{{ resumen.pendientes }}</strong><span>Pendientes</span></article>
+    <article><strong>{{ resumen.urgentes }}</strong><span>Urgentes</span></article>
+    <article><strong>{{ resumen.confirmados }}</strong><span>Confirmados</span></article>
+  </section>
+
+  <section class="two-columns">
+    <div class="panel">
+      <div class="section-title"><div><p class="eyebrow">INVENTARIO</p><h2>Productos</h2></div></div>
+      <div class="product-list">
+        @for (producto of productos; track producto.id) {
+          <article class="product-row">
+            <div><strong>{{ producto.nombre }}</strong><span>{{ producto.categoria }} · ${{ producto.precio | number }}</span></div>
+            <span class="stock-chip" [class]="claseStock(producto)">{{ etiquetaStock(producto) }} · {{ producto.cantidad }}</span>
+            <div class="row-actions"><button type="button" title="Editar producto" (click)="editarProducto(producto)">Editar</button><button type="button" class="danger" title="Eliminar producto" (click)="eliminarProducto(producto)">Eliminar</button></div>
+          </article>
+        } @empty { <p class="empty">No hay productos para mostrar.</p> }
+      </div>
+    </div>
+
+    <form class="panel form-panel" (ngSubmit)="guardarProducto()">
+      <p class="eyebrow">{{ editandoId === undefined ? 'NUEVO PRODUCTO' : 'EDITAR PRODUCTO' }}</p><h2>{{ editandoId === undefined ? 'Agregar al inventario' : 'Actualizar producto' }}</h2>
+      <label>Nombre<input name="nombre" [(ngModel)]="productoForm.nombre" required></label>
+      <label>Categoría<input name="categoria" [(ngModel)]="productoForm.categoria" required></label>
+      <label>Precio<input name="precio" type="number" min="0" [(ngModel)]="productoForm.precio" required></label>
+      <label>Cantidad<input name="cantidad" type="number" min="0" [(ngModel)]="productoForm.cantidad" required></label>
+      <div class="form-actions"><button class="primary" type="submit">{{ editandoId === undefined ? 'Crear producto' : 'Guardar cambios' }}</button>@if (editandoId !== undefined) { <button type="button" (click)="cancelarEdicion()">Cancelar</button> }</div>
+    </form>
+  </section>
+
+  <section class="two-columns order-section">
+    <form class="panel form-panel" (ngSubmit)="crearPedido()">
+      <p class="eyebrow">NUEVO PEDIDO</p><h2>Crear pedido</h2>
+      <label>Cliente<input name="cliente" [(ngModel)]="pedidoForm.cliente" required></label>
+      <label>Producto<select name="productoId" [(ngModel)]="pedidoForm.productoId" required><option [ngValue]="0" disabled>Selecciona un producto</option>@for (producto of productos; track producto.id) { <option [ngValue]="producto.id">{{ producto.nombre }} ({{ producto.cantidad }} disponibles)</option> }</select></label>
+      <label>Cantidad<input name="pedidoCantidad" type="number" min="1" [(ngModel)]="pedidoForm.cantidad" required></label>
+      <label>Prioridad<select name="prioridad" [(ngModel)]="pedidoForm.prioridad"><option value="BAJA">Baja</option><option value="MEDIA">Media</option><option value="ALTA">Alta</option><option value="URGENTE">Urgente</option></select></label>
+      <button class="primary" type="submit">Crear pedido</button>
+    </form>
+
+    <div class="panel">
+      <p class="eyebrow">SEGUIMIENTO</p><h2>Pedidos</h2>
+      <div class="order-list">
+        @for (pedido of pedidos; track pedido.id) {
+          <article class="order-row"><div><strong>#{{ pedido.id }} · {{ pedido.cliente }}</strong><span>Producto {{ pedido.productoId }} · {{ pedido.cantidad }} unidad(es) · {{ pedido.prioridad }}</span></div><span class="status" [class]="pedido.estado?.toLowerCase()">{{ pedido.estado }}</span><div class="row-actions">@for (accion of accionesPara(pedido.estado); track accion) { <button type="button" (click)="cambiarEstado(pedido, accion)">{{ etiquetaAccion(accion) }}</button> }</div></article>
+        } @empty { <p class="empty">No hay pedidos para mostrar.</p> }
+      </div>
+    </div>
+  </section>
+
+  @if (cargando) { <p class="loading">Consultando el backend...</p> }
+</main>

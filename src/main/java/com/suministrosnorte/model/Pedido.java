@@ -9,6 +9,9 @@ public class Pedido {
     private Prioridad prioridad;
     private Estado estado;
 
+    // Constructor vacío (obligatorio para Jackson)
+    public Pedido() {}
+
     public Long getId() {
         return id;
     }
