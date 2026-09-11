@@ -13,10 +13,16 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, Object>> handleResponseStatus(ResponseStatusException ex) {
+        String mensaje = ex.getReason() != null ? ex.getReason() : "Algo salió mal. Vuelve a intentarlo.";
+
+        if (ex.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
+            mensaje = "No se encontró el recurso solicitado. Vuelve a intentarlo.";
+        }
+
         return ResponseEntity.status(ex.getStatusCode())
                 .body(Map.of(
                         "error", ex.getStatusCode().toString(),
-                        "mensaje", ex.getReason() != null ? ex.getReason() : "Error en la petición"
+                        "mensaje", mensaje
                 ));
     }
 
@@ -25,7 +31,7 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of(
                         "error", "INTERNAL_SERVER_ERROR",
-                        "mensaje", ex.getMessage() != null ? ex.getMessage() : "Error inesperado"
+                        "mensaje", "Algo salió mal. Vuelve a intentarlo."
                 ));
     }
 }

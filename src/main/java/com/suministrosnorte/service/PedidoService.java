@@ -116,7 +116,7 @@ public class PedidoService {
 
     private Pedido buscar(Long id) {
         return pedidos.stream().filter(p -> p.getId().equals(id)).findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido no existe"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido no encontrado. Vuelve a intentarlo."));
     }
 
     private void exigirEstado(Pedido pedido, Estado esperado) {
