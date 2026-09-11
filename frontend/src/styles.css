@@ -1,6 +1,17 @@
 :root { --ink: #17201d; --muted: #66716b; --paper: #f3f3ec; --panel: #fffefa; --line: #d5dcd3; --green: #1a5145; --lime: #dcef75; --red: #b8413c; --orange: #c67125; }
 * { box-sizing: border-box; }
-body { background: var(--paper); color: var(--ink); font-family: Arial, sans-serif; margin: 0; }
+html, body { min-height: 100%; }
+body {
+  background-color: var(--paper);
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMB9eeb_A8sGCOzB7pS_DKPOyZLlK9FZBe20NwGYoXrA&s=10');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
 .topbar { align-items: center; background: var(--green); color: white; display: flex; justify-content: space-between; padding: 16px max(24px, calc((100vw - 1180px) / 2)); }
 .brand { align-items: center; display: flex; font-size: 13px; font-weight: 700; gap: 10px; letter-spacing: 1px; }.brand-mark { align-items: center; background: var(--lime); color: var(--green); display: inline-flex; height: 30px; justify-content: center; width: 30px; }
 .icon-button { background: none; border: 1px solid #cbe0c9; color: white; cursor: pointer; font-size: 20px; height: 34px; width: 34px; }
